@@ -1,14 +1,10 @@
 # netlify.toml — Trailhead Auto Concierge
-# Place this file in the ROOT of your site folder alongside index.html
 
 [build]
   publish = "."
 
-# Redirect /thank-you.html handled as a static page (no redirect needed)
-
-# Optional: set custom headers
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "DENY"
+    X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"

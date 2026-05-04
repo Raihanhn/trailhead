@@ -9,6 +9,20 @@
 </head>
 <body>
 
+  <!-- Hidden form for Netlify form detection at build time -->
+  <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text"  name="name" />
+    <input type="email" name="email" />
+    <input type="tel"   name="phone" />
+    <input type="text"  name="vehicle" />
+    <select name="service">
+      <option value="Deal Strategy &amp; Negotiation">Deal Strategy &amp; Negotiation</option>
+      <option value="Full Concierge Experience">Full Concierge Experience</option>
+      <option value="Not sure yet">Not sure yet</option>
+    </select>
+    <textarea name="message"></textarea>
+  </form>
+
   <!-- ====== Top Navigation ====== -->
   <header class="topbar">
     <div class="container nav">
@@ -278,7 +292,7 @@
               method="POST"
               data-netlify="true"
               data-netlify-honeypot="bot-field"
-              action="/thank-you.html"
+              
             >
               <input type="hidden" name="form-name" value="contact" />
               <p style="display:none;">
@@ -308,11 +322,7 @@
               <button type="submit" class="button button-primary" id="submitBtn">Send Consultation Request</button>
             </form>
 
-            <p class="fine">
-              Submissions are automatically emailed to
-              <a href="mailto:trailheadauto@gmail.com" style="color:var(--accent);">trailheadauto@gmail.com</a>
-              via Netlify Forms. See the HTML comment above the form for one-time setup steps.
-            </p>
+            <!-- Dev note: on Netlify, form POSTs to /thank-you.html and emails trailheadauto@gmail.com -->
           </article>
 
           <article class="contact-card">
@@ -396,10 +406,10 @@
         });
       });
 
-      /* ── Contact form ──
-         • On Netlify (live site): normal POST → redirects to /thank-you.html
-         • Locally (localhost / file://): intercepts submit, shows inline
-           success message so the 405 error never appears during development.
+      /* ── Contact form — AJAX submission ──
+         Works on both local and Netlify.
+         On Netlify: POSTs to Netlify Forms, then redirects to /thank-you
+         Locally: shows inline success message (no server needed)
       ── */
       const form      = document.getElementById('consultationForm');
       const successEl = document.getElementById('formSuccess');
@@ -413,18 +423,36 @@
 
       if (form) {
         form.addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Sending…';
+
           if (isLocal) {
-            /* Prevent the broken POST on local dev server */
-            e.preventDefault();
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Sending…';
+            /* Local: just show success message */
             setTimeout(function () {
               form.reset();
               successEl.style.display = 'block';
               submitBtn.style.display = 'none';
             }, 600);
+            return;
           }
-          /* On Netlify the event is NOT prevented → normal POST works */
+
+          /* Netlify: AJAX POST then redirect */
+          var formData = new FormData(form);
+          fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
+          })
+          .then(function () {
+            window.location.href = '/thank-you';
+          })
+          .catch(function (err) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Consultation Request';
+            alert('Something went wrong. Please try again or email trailheadauto@gmail.com directly.');
+          });
         });
       }
     })();
