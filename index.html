@@ -3,675 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trailhead Auto Concierge</title>
   <meta name="description" content="Off-road inspired auto buying guidance. Vehicle sourcing, negotiation, and concierge support for buyers who want a cleaner deal." />
-  <style>
-    :root{
-      --bg:#0b0b0b;
-      --bg2:#121212;
-      --panel:#171717;
-      --panel2:#1f1f1f;
-      --text:#f5f1e8;
-      --muted:#b6aa95;
-      --line:#2e2a24;
-      --accent:#c7a66a;
-      --accent-2:#8f7241;
-      --white:#ffffff;
-      --shadow: 0 20px 50px rgba(0,0,0,.35);
-      --radius: 20px;
-      --max: 1180px;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body{
-      margin:0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at top left, rgba(199,166,106,.10), transparent 28%),
-        radial-gradient(circle at top right, rgba(199,166,106,.06), transparent 24%),
-        linear-gradient(180deg, #0a0a0a 0%, #111111 100%);
-      line-height:1.6;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    img { max-width:100%; display:block; }
-
-    .container{
-      width:min(calc(100% - 32px), var(--max));
-      margin:0 auto;
-    }
-
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:20;
-      backdrop-filter: blur(12px);
-      background:rgba(10,10,10,.7);
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-
-    .nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-      min-height:72px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      font-weight:700;
-      letter-spacing:.02em;
-    }
-
-    .brand-mark{
-      width:40px;
-      height:40px;
-      border-radius:12px;
-      background:
-        linear-gradient(145deg, rgba(199,166,106,.20), rgba(199,166,106,.05)),
-        #171717;
-      border:1px solid rgba(199,166,106,.25);
-      display:grid;
-      place-items:center;
-      box-shadow: var(--shadow);
-      font-size:18px;
-    }
-
-    .nav-links{
-      display:flex;
-      gap:22px;
-      color:var(--muted);
-      font-size:.95rem;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-
-    .nav-links a:hover{ color:var(--text); }
-
-    .button{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      min-height:48px;
-      padding:0 20px;
-      border-radius:999px;
-      font-weight:700;
-      transition:.2s ease;
-      border:1px solid transparent;
-      cursor:pointer;
-      text-decoration:none;
-    }
-
-    .button-primary{
-      background:linear-gradient(180deg, var(--accent), #ae8d54);
-      color:#131313;
-      box-shadow: 0 10px 30px rgba(199,166,106,.25);
-    }
-
-    .button-primary:hover{
-      transform: translateY(-1px);
-      filter: brightness(1.03);
-    }
-
-    .button-secondary{
-      background:rgba(255,255,255,.03);
-      border-color:rgba(255,255,255,.10);
-      color:var(--text);
-    }
-
-    .button-secondary:hover{
-      background:rgba(255,255,255,.06);
-      transform: translateY(-1px);
-    }
-
-    .hero{
-      padding:84px 0 56px;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 14px;
-      border-radius:999px;
-      font-size:.85rem;
-      color:var(--muted);
-      border:1px solid rgba(199,166,106,.18);
-      background:rgba(255,255,255,.02);
-      margin-bottom:20px;
-    }
-
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:30px;
-      align-items:stretch;
-    }
-
-    .hero-copy h1{
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(2.8rem, 7vw, 5.3rem);
-      line-height: .95;
-      margin:0 0 18px;
-      letter-spacing:-.03em;
-    }
-
-    .hero-copy p.lead{
-      max-width:760px;
-      font-size:1.15rem;
-      color:#ddd4c6;
-      margin:0 0 28px;
-    }
-
-    .cta-row{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-top:18px;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:16px;
-      margin-top:34px;
-    }
-
-    .stat{
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:18px;
-      padding:18px;
-    }
-
-    .stat strong{
-      display:block;
-      font-size:1.2rem;
-      margin-bottom:4px;
-      color:var(--white);
-    }
-
-    .stat span{
-      color:var(--muted);
-      font-size:.95rem;
-    }
-
-    .hero-card{
-      border-radius:28px;
-      padding:28px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015)),
-        linear-gradient(145deg, rgba(199,166,106,.08), rgba(199,166,106,0) 50%);
-      border:1px solid rgba(255,255,255,.08);
-      box-shadow: var(--shadow);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      overflow:hidden;
-      position:relative;
-      min-height:100%;
-    }
-
-    .hero-card::after{
-      content:"";
-      position:absolute;
-      inset:auto -80px -80px auto;
-      width:220px;
-      height:220px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(199,166,106,.22), transparent 65%);
-      pointer-events:none;
-    }
-
-    .card-tag{
-      display:inline-block;
-      font-size:.8rem;
-      color:#1a1a1a;
-      font-weight:700;
-      background:var(--accent);
-      border-radius:999px;
-      padding:7px 10px;
-      margin-bottom:18px;
-    }
-
-    .hero-card h2{
-      font-family: Georgia, "Times New Roman", serif;
-      font-size:2rem;
-      line-height:1.05;
-      margin:0 0 12px;
-    }
-
-    .hero-card p{
-      margin:0 0 18px;
-      color:#ddd4c6;
-    }
-
-    .mini-list{
-      display:grid;
-      gap:10px;
-      padding:0;
-      margin:14px 0 0;
-      list-style:none;
-      color:var(--muted);
-    }
-
-    .mini-list li{
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-    }
-
-    section{
-      padding:28px 0 24px;
-    }
-
-    .trust{
-      padding-top:8px;
-    }
-
-    .panel{
-      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.018));
-      border:1px solid rgba(255,255,255,.07);
-      border-radius:28px;
-      padding:34px;
-      box-shadow: var(--shadow);
-    }
-
-    .section-head{
-      margin-bottom:18px;
-    }
-
-    .section-head .kicker{
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      color:var(--accent);
-      font-size:.78rem;
-      font-weight:800;
-      margin-bottom:10px;
-    }
-
-    .section-head h2{
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height:1.02;
-      margin:0 0 8px;
-    }
-
-    .section-head p{
-      color:#d8cfbf;
-      max-width:760px;
-      margin:0;
-    }
-
-    .services-grid,
-    .steps-grid,
-    .pricing-grid,
-    .contact-grid{
-      display:grid;
-      gap:18px;
-    }
-
-    .services-grid{
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .service-card,
-    .step-card,
-    .price-card,
-    .contact-card{
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-      border:1px solid rgba(255,255,255,.07);
-      border-radius:24px;
-      padding:24px;
-    }
-
-    .service-card h3,
-    .step-card h3,
-    .price-card h3,
-    .contact-card h3{
-      margin:0 0 10px;
-      font-size:1.2rem;
-    }
-
-    .service-card p,
-    .step-card p,
-    .price-card p,
-    .contact-card p{
-      margin:0;
-      color:var(--muted);
-    }
-
-    .steps-grid{
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .step-num{
-      width:40px;
-      height:40px;
-      border-radius:999px;
-      display:grid;
-      place-items:center;
-      background:rgba(199,166,106,.12);
-      border:1px solid rgba(199,166,106,.26);
-      color:var(--accent);
-      font-weight:800;
-      margin-bottom:16px;
-    }
-
-    .standout{
-      padding:18px 22px;
-      border-left:4px solid var(--accent);
-      background:rgba(199,166,106,.06);
-      border-radius:16px;
-      font-weight:700;
-      font-size:1.12rem;
-      margin-top:24px;
-    }
-
-    .pricing-grid{
-      grid-template-columns: repeat(2, 1fr);
-      align-items:start;
-    }
-
-    .price-card.featured{
-      background:
-        linear-gradient(180deg, rgba(199,166,106,.12), rgba(255,255,255,.02)),
-        linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
-      border-color: rgba(199,166,106,.28);
-    }
-
-    .price{
-      font-size:2rem;
-      font-weight:800;
-      line-height:1;
-      margin:10px 0 16px;
-      color:var(--white);
-    }
-
-    .price-sub{
-      color:var(--muted);
-      font-size:.95rem;
-      margin-bottom:16px;
-    }
-
-    .bullet-list{
-      list-style:none;
-      padding:0;
-      margin:18px 0 0;
-      display:grid;
-      gap:12px;
-      color:#ddd4c6;
-    }
-
-    .bullet-list li::before{
-      content:"•";
-      color:var(--accent);
-      margin-right:10px;
-    }
-
-    .contact-grid{
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .contact-card form{
-      display:grid;
-      gap:14px;
-      margin-top:12px;
-    }
-
-    input, textarea, select{
-      width:100%;
-      background:#111;
-      color:var(--text);
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:14px;
-      padding:14px 15px;
-      font:inherit;
-      outline:none;
-    }
-
-    input:focus, textarea:focus, select:focus{
-      border-color:rgba(199,166,106,.65);
-      box-shadow:0 0 0 3px rgba(199,166,106,.12);
-    }
-
-    textarea{
-      min-height:140px;
-      resize:vertical;
-    }
-
-    .fine{
-      color:var(--muted);
-      font-size:.92rem;
-    }
-
-    footer{
-      padding:26px 0 36px;
-      color:var(--muted);
-      font-size:.95rem;
-    }
-
-    .footer-wrap{
-      display:flex;
-      justify-content:space-between;
-      gap:18px;
-      border-top:1px solid rgba(255,255,255,.08);
-      padding-top:22px;
-      flex-wrap:wrap;
-    }
-
-    @media (max-width: 980px){
-      .hero-grid,
-      .services-grid,
-      .steps-grid,
-      .pricing-grid,
-      .contact-grid{
-        grid-template-columns: 1fr;
-      }
-
-      .stats{
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 680px){
-      .nav{
-        min-height:auto;
-        padding:14px 0;
-        align-items:flex-start;
-        flex-direction:column;
-      }
-
-      .nav-links{
-        gap:14px;
-      }
-
-      .hero{
-        padding-top:64px;
-      }
-
-      .panel{
-        padding:24px;
-      }
-
-      .hero-card{
-        padding:22px;
-      }
-
-      .hero-copy h1{
-        font-size: clamp(2.5rem, 12vw, 4rem);
-      }
-    }
-
-    /* Clean spacing + alignment updates */
-    .logo{
-      height:68px;
-      width:auto;
-      display:block;
-    }
-
-    .brand-text{
-      font-weight:800;
-      letter-spacing:.02em;
-    }
-
-    .hero{
-      padding:56px 0 34px;
-    }
-
-    section{
-      padding:22px 0;
-    }
-
-    .panel,
-    .service-card,
-    .step-card,
-    .price-card,
-    .contact-card{
-      height:100%;
-    }
-
-    .services-grid,
-    .steps-grid,
-    .pricing-grid,
-    .contact-grid{
-      align-items:stretch;
-    }
-
-    .section-head{
-      text-align:left;
-      margin-bottom:16px;
-    }
-
-    .section-head p{
-      margin-left:0;
-    }
-
-    .pricing-grid .price-card,
-    .contact-grid .contact-card{
-      display:flex;
-      flex-direction:column;
-    }
-
-    .price-card .bullet-list{
-      flex:1;
-    }
-
-    .payment-card{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:24px;
-      align-items:center;
-      background:
-        linear-gradient(180deg, rgba(199,166,106,.10), rgba(255,255,255,.018)),
-        linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.018));
-      border:1px solid rgba(199,166,106,.22);
-      border-radius:28px;
-      padding:30px;
-      box-shadow: var(--shadow);
-    }
-
-    .payment-copy h2{
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(2rem, 4vw, 3rem);
-      line-height:1.02;
-      margin:0 0 10px;
-    }
-
-    .payment-copy p{
-      color:#d8cfbf;
-      margin:0 0 18px;
-      max-width:680px;
-    }
-
-    .qr-wrap{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
-
-    .qr-box{
-      background:#fff;
-      padding:16px;
-      border-radius:20px;
-      width:min(260px, 100%);
-      box-shadow:0 16px 35px rgba(0,0,0,.25);
-    }
-
-    .qr-box img{
-      width:100%;
-      height:auto;
-      display:block;
-    }
-
-    @media (max-width: 980px){
-      .payment-card{
-        grid-template-columns:1fr;
-        text-align:center;
-      }
-
-      .payment-copy p{
-        margin-left:auto;
-        margin-right:auto;
-      }
-    }
-
-    @media (max-width: 680px){
-      .logo{
-        height:58px;
-      }
-
-      .hero{
-        padding:38px 0 26px;
-      }
-
-      section{
-        padding:18px 0;
-      }
-
-      .section-head{
-        text-align:left;
-      }
-
-      .payment-card{
-        padding:22px;
-      }
-    }
-
-  </style>
+  <title>Trailhead Auto Concierge</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- ====== Top Navigation ====== -->
   <header class="topbar">
     <div class="container nav">
+
       <a href="#" class="brand" aria-label="Trailhead Auto Concierge home">
-        <img src="images/logo.png" alt="Trailhead Auto Concierge logo" class="logo">
-        <div class="brand-text">Trailhead Auto Concierge</div>
+        <img src="images/logo.png" alt="Trailhead Auto Concierge logo" class="logo" />
+        <span class="brand-text">Trailhead Auto Concierge</span>
       </a>
-      <nav class="nav-links" aria-label="Primary">
+
+      <!-- Hamburger toggle (mobile) -->
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="nav-links" id="navLinks" aria-label="Primary">
         <a href="#services">Services</a>
         <a href="#process">How it works</a>
         <a href="#pricing">Pricing</a>
         <a href="#contact">Contact</a>
         <a href="#payment">Payment</a>
       </nav>
+
     </div>
   </header>
 
   <main>
+
+    <!-- ====== Hero ====== -->
     <section class="hero">
       <div class="container hero-grid">
+
         <div class="hero-copy">
-          <div class="eyebrow">OFF-ROAD INSPIRED AUTO BUYING</div>
+          <div class="eyebrow">Off-Road Inspired Auto Buying</div>
           <h1>Navigate the deal like a trail you already know.</h1>
           <p class="lead">
-            Skip the dealership games. Get the right vehicle, the right numbers, and a clean path to the keys.
-            Trailhead helps buyers source, structure, and negotiate smarter deals — locally or anywhere in the country.
+            Skip the dealership games. Get the right vehicle, the right numbers, and a clean path
+            to the keys. Trailhead helps buyers source, structure, and negotiate smarter deals —
+            locally or anywhere in the country.
           </p>
 
           <div class="cta-row">
@@ -697,85 +74,102 @@
 
         <aside class="hero-card">
           <div>
-            <div class="card-tag">Premium buyer support</div>
+            <span class="card-tag">Premium buyer support</span>
             <h2>Built for buyers who want more than generic broker talk.</h2>
             <p>
-              Off-road attitude. Clean process. Premium client experience. Trailhead is designed for daily drivers,
-              family haulers, enthusiast rigs, and buyers who want the deal to make sense before they sign.
+              Off-road attitude. Clean process. Premium client experience. Trailhead is designed
+              for daily drivers, family haulers, enthusiast rigs, and buyers who want the deal
+              to make sense before they sign.
             </p>
           </div>
 
           <ul class="mini-list">
-            <li><span>↗</span><span>Vehicle sourcing without dead-end listings</span></li>
-            <li><span>↗</span><span>Quote comparison, incentive review, fee cleanup</span></li>
-            <li><span>↗</span><span>High-touch concierge support when the deal gets complicated</span></li>
+            <li>
+              <span>↗</span>
+              <span>Vehicle sourcing without dead-end listings</span>
+            </li>
+            <li>
+              <span>↗</span>
+              <span>Quote comparison, incentive review, fee cleanup</span>
+            </li>
+            <li>
+              <span>↗</span>
+              <span>High-touch concierge support when the deal gets complicated</span>
+            </li>
           </ul>
         </aside>
+
       </div>
     </section>
 
+    <!-- ====== Trust Panel ====== -->
     <section class="trust">
       <div class="container">
         <div class="panel">
           <div class="section-head">
-            <div class="kicker">Why Trailhead</div>
+            <p class="kicker">Why Trailhead</p>
             <h2>Built by someone who knows the system.</h2>
             <p>
-              This is not guesswork. Trailhead is built around understanding how deals are actually structured:
-              pricing, incentives, backend, fees, and where the numbers get padded. The goal is simple —
-              give buyers that advantage on their side of the table.
+              This is not guesswork. Trailhead is built around understanding how deals are actually
+              structured: pricing, incentives, backend, fees, and where the numbers get padded.
+              The goal is simple — give buyers that advantage on their side of the table.
             </p>
           </div>
-          <div class="standout">Most people walk into a dealership blind. You don’t have to.</div>
+          <div class="standout">Most people walk into a dealership blind. You don't have to.</div>
         </div>
       </div>
     </section>
 
+    <!-- ====== Services ====== -->
     <section id="services">
       <div class="container">
         <div class="section-head">
-          <div class="kicker">Services</div>
+          <p class="kicker">Services</p>
           <h2>Services mapped for the whole route.</h2>
-          <p>
-            From first search to final signature, Trailhead keeps the process clean, confident, and efficient.
-          </p>
+          <p>From first search to final signature, Trailhead keeps the process clean, confident, and efficient.</p>
         </div>
 
         <div class="services-grid">
+
           <article class="service-card">
             <h3>Vehicle sourcing</h3>
             <p>
-              Share the target vehicle, trim, budget, and must-have features. Trailhead helps locate the right fit
-              without wasting time on dead-end inventory.
+              Share the target vehicle, trim, budget, and must-have features. Trailhead helps locate
+              the right fit without wasting time on dead-end inventory.
             </p>
           </article>
 
           <article class="service-card">
             <h3>Deal negotiation</h3>
             <p>
-              Pricing, incentives, fees, and trade value get reviewed so the deal makes sense on paper, not just in the showroom.
+              Pricing, incentives, fees, and trade value get reviewed so the deal makes sense on paper,
+              not just in the showroom.
             </p>
           </article>
 
           <article class="service-card">
             <h3>Concierge support</h3>
             <p>
-              For buyers who want the full path handled: sourcing, negotiation, deal review, and delivery coordination.
+              For buyers who want the full path handled: sourcing, negotiation, deal review, and
+              delivery coordination.
             </p>
           </article>
+
         </div>
       </div>
     </section>
 
+    <!-- ====== Process ====== -->
     <section id="process">
       <div class="container">
         <div class="section-head">
-          <div class="kicker">How it works</div>
+          <p class="kicker">How it works</p>
           <h2>The process is simple on purpose.</h2>
           <p>Clean route in, better result out.</p>
         </div>
 
         <div class="steps-grid">
+
           <article class="step-card">
             <div class="step-num">1</div>
             <h3>Build the route</h3>
@@ -789,7 +183,8 @@
             <div class="step-num">2</div>
             <h3>Work the terrain</h3>
             <p>
-              Review options, compare quotes, identify junk fees, and negotiate the best path forward with the dealer network.
+              Review options, compare quotes, identify junk fees, and negotiate the best path forward
+              with the dealer network.
             </p>
           </article>
 
@@ -797,28 +192,33 @@
             <div class="step-num">3</div>
             <h3>Close clean</h3>
             <p>
-              Get a straightforward recommendation and cleaner deal structure so you can move confidently when it is time to sign.
+              Get a straightforward recommendation and cleaner deal structure so you can move
+              confidently when it is time to sign.
             </p>
           </article>
+
         </div>
       </div>
     </section>
 
+    <!-- ====== Pricing ====== -->
     <section id="pricing">
       <div class="container">
         <div class="section-head">
-          <div class="kicker">Pricing</div>
+          <p class="kicker">Pricing</p>
           <h2>Clear pricing with room for complex deals.</h2>
-          <p>
-            Launch pricing can be changed anytime, but this gives you a clean structure right now.
-          </p>
+          <p>Launch pricing can be changed anytime, but this gives you a clean structure right now.</p>
         </div>
 
         <div class="pricing-grid">
+
           <article class="price-card featured">
             <h3>Deal Strategy &amp; Negotiation</h3>
             <div class="price">$500</div>
-            <div class="price-sub">For buyers who want expert support finding the right vehicle and making sure the numbers make sense before they sign.</div>
+            <p class="price-sub">
+              For buyers who want expert support finding the right vehicle and making sure the numbers
+              make sense before they sign.
+            </p>
             <ul class="bullet-list">
               <li>Vehicle sourcing</li>
               <li>Negotiation</li>
@@ -830,7 +230,10 @@
           <article class="price-card">
             <h3>Full Concierge Experience</h3>
             <div class="price">$1,000</div>
-            <div class="price-sub">For buyers who want the full route handled, including more complex, higher-value, or harder-to-find vehicles.</div>
+            <p class="price-sub">
+              For buyers who want the full route handled, including more complex, higher-value, or
+              harder-to-find vehicles.
+            </p>
             <ul class="bullet-list">
               <li>Vehicle sourcing</li>
               <li>Negotiation</li>
@@ -841,40 +244,69 @@
               <li>Vehicles over $75,000</li>
             </ul>
           </article>
+
         </div>
       </div>
     </section>
 
+    <!-- ====== Contact ====== -->
     <section id="contact">
       <div class="container">
         <div class="section-head">
-          <div class="kicker">Contact</div>
+          <p class="kicker">Contact</p>
           <h2>Ready to build the route?</h2>
-          <p>
-            Swap in your real contact info and this is ready to launch. Fill out the form below and your request will be sent through the site.
-          </p>
+          <p>Fill out the form below and I'll reach out directly to map out the best path forward.</p>
         </div>
 
         <div class="contact-grid">
+
           <article class="contact-card">
             <h3>Request consultation</h3>
-            <p>Fill this out and I’ll reach out directly.</p>
+            <p>Fill this out and I'll reach out directly.</p>
 
-            <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you.html">
+            <!--
+              HOW TO ENABLE AUTO-EMAIL TO trailheadauto@gmail.com (Netlify):
+              1. Deploy site to Netlify (drag-and-drop the folder or connect Git).
+              2. In Netlify dashboard: Site → Forms → "contact" → Form notifications.
+              3. Click "Add notification" → "Email notification".
+              4. Enter: trailheadauto@gmail.com — Save.
+              Every submission will now be automatically emailed to that address.
+            -->
+            <form
+              name="contact"
+              method="POST"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+              action="/thank-you.html"
+            >
               <input type="hidden" name="form-name" value="contact" />
-              <p style="display:none;"><label>Don’t fill this out if you’re human: <input name="bot-field" /></label></p>
-              <input type="text" id="name" name="name" placeholder="Your name" required />
-              <input type="email" id="email" name="email" placeholder="Your email" required />
-              <input type="text" id="vehicle" name="vehicle" placeholder="Target vehicle / trim" />
+              <p style="display:none;">
+                <label>Do not fill this out: <input name="bot-field" /></label>
+              </p>
+
+              <input type="text"  id="name"    name="name"    placeholder="Your name"             required />
+              <input type="email" id="email"   name="email"   placeholder="Your email"            required />
+              <input type="tel"   id="phone"   name="phone"   placeholder="Your phone (optional)" />
+              <input type="text"  id="vehicle" name="vehicle" placeholder="Target vehicle / trim"  />
+
               <select id="service" name="service">
-                <option value="Deal Strategy & Negotiation">Deal Strategy & Negotiation</option>
-                <option value="Full Concierge Experience">Full Concierge Experience</option>
+                <option value="" disabled selected>Select a service&hellip;</option>
+                <option value="Deal Strategy &amp; Negotiation">Deal Strategy &amp; Negotiation &mdash; $500</option>
+                <option value="Full Concierge Experience">Full Concierge Experience &mdash; $1,000</option>
                 <option value="Not sure yet">Not sure yet</option>
               </select>
-              <textarea id="message" name="message" placeholder="Tell me what you're shopping for, your budget, and where you're at in the process."></textarea>
-              <button type="submit" class="button button-primary">Request Consultation</button>
+
+              <textarea id="message" name="message"
+                placeholder="Tell me what you're shopping for, your budget, and where you're at in the process."></textarea>
+
+              <button type="submit" class="button button-primary">Send Consultation Request</button>
             </form>
-            <p class="fine">After deploying, enable Netlify form notifications to receive submissions at trailheadauto@gmail.com.</p>
+
+            <p class="fine">
+              Submissions are automatically emailed to
+              <a href="mailto:trailheadauto@gmail.com" style="color:var(--accent);">trailheadauto@gmail.com</a>
+              via Netlify Forms. See the HTML comment above the form for one-time setup steps.
+            </p>
           </article>
 
           <article class="contact-card">
@@ -885,50 +317,80 @@
               <li>Instagram: @trailheadautoconcierge</li>
               <li>Service area: Rhode Island + remote clients</li>
             </ul>
-            <div class="cta-row" style="margin-top:22px;">
+
+            <div class="cta-row" style="margin-top: 24px;">
               <a href="mailto:trailheadauto@gmail.com" class="button button-secondary">Email</a>
               <a href="tel:+17743311516" class="button button-secondary">Call now</a>
             </div>
-            <p class="fine" style="margin-top:18px;">
-              Prefer to talk first? Call or email directly and I’ll help map out the best route.
+
+            <p class="fine" style="margin-top: 20px;">
+              Prefer to talk first? Call or email directly and I'll help map out the best route.
             </p>
           </article>
+
         </div>
       </div>
     </section>
 
+    <!-- ====== Payment ====== -->
     <section id="payment">
       <div class="container">
         <div class="payment-card">
+
           <div class="payment-copy">
-            <div class="section-head" style="margin-bottom:0;">
-              <div class="kicker">Payment</div>
+            <div class="section-head" style="margin-bottom: 16px;">
+              <p class="kicker">Payment</p>
               <h2>Make a Payment</h2>
               <p>Scan the Square QR code to secure your consultation or begin your Trailhead process.</p>
             </div>
             <div class="cta-row">
-              <a class="button button-primary" href="tel:+17743311516">Call 774-331-1516</a>
+              <a class="button button-primary"   href="tel:+17743311516">Call 774-331-1516</a>
               <a class="button button-secondary" href="mailto:trailheadauto@gmail.com">Email Trailhead</a>
             </div>
           </div>
 
           <div class="qr-wrap">
             <div class="qr-box">
-              <img src="images/qr.png" alt="Square payment QR code">
+              <img src="images/qr.png" alt="Square payment QR code" />
             </div>
           </div>
+
         </div>
       </div>
     </section>
 
   </main>
 
+  <!-- ====== Footer ====== -->
   <footer>
     <div class="container footer-wrap">
       <div>© 2026 Trailhead Auto Concierge</div>
       <div>Navigate the deal. Own the route.</div>
     </div>
   </footer>
+
+  <!-- ====== Mobile Nav Script ====== -->
+  <script>
+    (function () {
+      const toggle = document.getElementById('navToggle');
+      const links  = document.getElementById('navLinks');
+
+      toggle.addEventListener('click', function () {
+        const isOpen = links.classList.toggle('open');
+        toggle.classList.toggle('open', isOpen);
+        toggle.setAttribute('aria-expanded', isOpen);
+      });
+
+      // Close nav when a link is tapped on mobile
+      links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          links.classList.remove('open');
+          toggle.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>
