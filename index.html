@@ -273,6 +273,7 @@
               Every submission will now be automatically emailed to that address.
             -->
             <form
+              id="consultationForm"
               name="contact"
               method="POST"
               data-netlify="true"
@@ -299,7 +300,12 @@
               <textarea id="message" name="message"
                 placeholder="Tell me what you're shopping for, your budget, and where you're at in the process."></textarea>
 
-              <button type="submit" class="button button-primary">Send Consultation Request</button>
+              <!-- Success message (hidden until form submits on Netlify) -->
+              <div id="formSuccess" style="display:none; padding:16px 20px; background:rgba(199,166,106,.10); border:1px solid rgba(199,166,106,.30); border-radius:14px; color:var(--accent); font-weight:700; text-align:center;">
+                ✅ Request sent! I'll be in touch shortly.
+              </div>
+
+              <button type="submit" class="button button-primary" id="submitBtn">Send Consultation Request</button>
             </form>
 
             <p class="fine">
@@ -369,9 +375,10 @@
     </div>
   </footer>
 
-  <!-- ====== Mobile Nav Script ====== -->
+  <!-- ====== Scripts ====== -->
   <script>
     (function () {
+      /* ── Mobile nav ── */
       const toggle = document.getElementById('navToggle');
       const links  = document.getElementById('navLinks');
 
@@ -381,7 +388,6 @@
         toggle.setAttribute('aria-expanded', isOpen);
       });
 
-      // Close nav when a link is tapped on mobile
       links.querySelectorAll('a').forEach(function (a) {
         a.addEventListener('click', function () {
           links.classList.remove('open');
@@ -389,6 +395,38 @@
           toggle.setAttribute('aria-expanded', 'false');
         });
       });
+
+      /* ── Contact form ──
+         • On Netlify (live site): normal POST → redirects to /thank-you.html
+         • Locally (localhost / file://): intercepts submit, shows inline
+           success message so the 405 error never appears during development.
+      ── */
+      const form      = document.getElementById('consultationForm');
+      const successEl = document.getElementById('formSuccess');
+      const submitBtn = document.getElementById('submitBtn');
+
+      const isLocal = (
+        location.hostname === 'localhost' ||
+        location.hostname === '127.0.0.1' ||
+        location.protocol === 'file:'
+      );
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          if (isLocal) {
+            /* Prevent the broken POST on local dev server */
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending…';
+            setTimeout(function () {
+              form.reset();
+              successEl.style.display = 'block';
+              submitBtn.style.display = 'none';
+            }, 600);
+          }
+          /* On Netlify the event is NOT prevented → normal POST works */
+        });
+      }
     })();
   </script>
 
